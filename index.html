@@ -1044,10 +1044,8 @@
         }
 
         function makeDraggable(element, handle) {
-            
-            if (!element || !handle) return;
 
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (!element || !handle) return;
             handle.style.cursor = 'move';
 
             const mouseUpHandler = () => {
@@ -1062,8 +1060,14 @@
                     return;
                 }
                 e.preventDefault();
-                let newTop = Math.max(0, Math.min(element.offsetTop - (e.clientY - pos4), window.innerHeight - element.offsetHeight));
-                let newLeft = Math.max(0, Math.min(element.offsetLeft - (e.clientX - pos3), window.innerWidth - element.offsetWidth));
+
+                let newTop = e.clientY - offsetY;
+                let newLeft = e.clientX - offsetX;
+
+                // Constrain to viewport
+                newTop = Math.max(0, Math.min(newTop, window.innerHeight - element.offsetHeight));
+                newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - element.offsetWidth));
+
                 element.style.top = newTop + 'px';
                 element.style.left = newLeft + 'px';
             };
@@ -1074,11 +1078,15 @@
                 }
             };
 
+            let offsetX = 0, offsetY = 0;
             handle.onmousedown = e => {
                 if (!element || !handle) return;
                 e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
+
+                const rect = element.getBoundingClientRect();
+                offsetY = e.clientY - rect.top;
+                offsetX = e.clientX - rect.left;
+
                 document.onmouseup = mouseUpHandler;
                 document.onmousemove = mouseMoveHandler;
                 document.onkeydown = keyDownHandler;
