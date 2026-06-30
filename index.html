@@ -737,11 +737,6 @@
         </div>
 
         <div class="desktop-icons">
-            <div class="desktop-icon" id="appMenu">
-                <i class="fas fa-paw cat-icon"></i>
-                <span>Apps</span>
-            </div>
-
             <div class="desktop-icon" id="iconTerminal">
                 <i class="fas fa-terminal cat-icon"></i>
                 <span>Terminal</span>
@@ -964,10 +959,10 @@
 
         function initStartMenu() {
             const startMenu = document.getElementById('startMenu');
-            const appMenuIcon = document.getElementById('appMenu');
+            const startButton = document.getElementById('startButton');
             const closeMenuBtn = document.getElementById('closeMenu');
 
-            appMenuIcon.addEventListener('click', e => {
+            startButton.addEventListener('click', e => {
                 e.stopPropagation();
                 startMenu.classList.toggle('active');
             });
@@ -978,7 +973,7 @@
             });
 
             document.addEventListener('click', e => {
-                if (!startMenu.contains(e.target) && !appMenuIcon.contains(e.target)) {
+                if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
                     startMenu.classList.remove('active');
                 }
             });
